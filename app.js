@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
+const connectDb = require("./dbConnection");
+
 
 const AllowCORS = require('./middlewares/cors_policy');
 
@@ -23,6 +25,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(AllowCORS); // for CORS Policy
+
+// Mongodb conncetion with the database_uri
+connectDb();
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
