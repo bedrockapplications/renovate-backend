@@ -19,3 +19,15 @@ One Stop Solution for:
 * Quick Chart
 * AI Estimator
  
+
+ <!--
+ -----------Modules Required 
+ User Auth Module
+ Tender Module
+ Dashboard Module
+ -----------------------------------
+ -----------Services Required
+ Email
+ Chat
+ notification
+ -->
