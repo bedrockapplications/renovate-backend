@@ -11,6 +11,8 @@ const AllowCORS = require('./middlewares/cors_policy');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var projectsRouter = require('./routes/projectRoutes');
+var questionRouter = require('./routes/securityQuestionRoutes');
 
 var app = express();
 
@@ -31,6 +33,8 @@ connectDb();
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/api/projects', projectsRouter);
+app.use('/api/questions', questionRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
