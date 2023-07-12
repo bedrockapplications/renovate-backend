@@ -7,15 +7,18 @@
     "dev": "nodemon ./bin/www"
   },
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^16.3.1",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.3.1",
     "morgan": "^1.10.0",
-    "nodemailer": "^6.9.3"
+    "nodemailer": "^6.9.3",
+    "shortid": "^2.2.16"
   },
   "description": "Backend Server for Bedrock project",
   "main": "app.js",
