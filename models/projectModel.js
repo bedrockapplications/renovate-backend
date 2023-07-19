@@ -3,12 +3,17 @@ const mongoose = require("mongoose");
 const projectSchema = mongoose.Schema(
   {
     projectName: { type: String },
-    ClientPhNumber: { type: Number },
-    Address: { type: String },
-    City: { type: String },
-    State: { type: String },
-    Zipcode: { type: Number },
-    StartDate: { type: String },
+    projectType: { 
+      type: String,
+      enum: ["DesignAI", "RenovateAI", "EstimateAI"],
+     },
+    clientPhNumber: { type: Number },
+    address: { type: String },
+    city: { type: String },
+    state: { type: String },
+    country: { type: String },
+    zipcode: { type: Number },
+    startDate: { type: String },
     userId: { type: mongoose.Schema.Types.ObjectId }, // ref: "br_user_profile"
     status: {
       type: String,
