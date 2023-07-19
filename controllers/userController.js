@@ -2,8 +2,8 @@ const userMiddleware = require("../middlewares/userMiddleware");
 const jwt = require("jsonwebtoken");
 let bcrypt = require("bcrypt");
 const shortid = require("shortid");
-const SALT = 7;
-// const SALT = process.env.SALT;
+// const SALT = 7;
+const SALT = parseInt(process.env.SALT);
 
 const userRegister = async (req, res, next) =>{
     try{
@@ -51,8 +51,29 @@ const userContractorRegister = async (req, res, next) =>{
     }
 }
 
-const userRegisterContractor = (req, res, next) =>{
-    res.json({ status: true, message: "Inprogress" });
+const userRegisterContractor = async(req, res, next) =>{
+    try{
+        // need to fetch the owner IDfrom token
+        let {fullName,email,password,phoneNumber,organizationName} = req.body;
+        if (!fullName||!email||!password||!phoneNumber||!organizationName) throw({message: "Required fields are missing" });
+        let filterQuery = {email};
+        let projectQuery = {};
+        let userExist = await userMiddleware.getSingleRecord({filterQuery,projectQuery});
+        if(userExist.status&&userExist.data) throw({message: "User Already Registered" });
+        const salt = await bcrypt.genSalt(SALT);
+        password = await bcrypt.hash(password, salt);
+        let ownerId="aaa"//TODO fetch from token
+        userMiddleware.createRecord({fullName,email,password,phoneNumber,organizationName, role:"contractor", ownerId}).then((data) => {
+            res.json(data);
+          })
+          .catch((err) => {
+            console.log("err===", err);
+            res.json({ status: false, message: err.message });
+          });
+    }catch(err){
+        console.log("err===", err);
+        res.json({ status: false, message: err.message });
+    }
 }
 
 const userLogin = async(req, res, next) =>{
@@ -94,7 +115,8 @@ const userResetPassword = async(req, res, next) =>{
         const salt = await bcrypt.genSalt(SALT);
         newPassword = await bcrypt.hash(newPassword, salt);
         let updateObj ={
-            password:newPassword
+            password:newPassword,
+            resetPassword:false
         }
             
         userMiddleware.updateRecord({filterQuery, updateObj}).then(data=>{
