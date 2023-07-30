@@ -13,6 +13,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var userRouter = require('./routes/userRoutes');
 var projectsRouter = require('./routes/projectRoutes');
+var projectContractorsRouter = require('./routes/projectContractorRoute');
 var questionRouter = require('./routes/securityQuestionRoutes');
 
 var app = express();
@@ -35,6 +36,7 @@ connectDb();
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/api/user', userRouter);
+app.use('/api/project/contractor', projectContractorsRouter);
 app.use('/api/project', projectsRouter);
 app.use('/api/question', questionRouter);
 
