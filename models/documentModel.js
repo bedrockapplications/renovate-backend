@@ -9,6 +9,7 @@ const documentSchema = mongoose.Schema(
     projectId: { type: mongoose.Schema.Types.ObjectId,  }, // ref: "br_project_contractor"
     categoryType: String,
     filePath: String,
+    docStatus: String,
     status: { type: String, enum: ["active", "inactive"], default: "active" },
 
   },

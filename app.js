@@ -15,7 +15,7 @@ var userRouter = require('./routes/userRoutes');
 var projectsRouter = require('./routes/projectRoutes');
 var projectContractorsRouter = require('./routes/projectContractorRoute');
 var questionRouter = require('./routes/securityQuestionRoutes');
-
+var documentRouter = require('./routes/documentRoute');
 var app = express();
 
 // view engine setup
@@ -39,6 +39,7 @@ app.use('/api/user', userRouter);
 app.use('/api/project/contractor', projectContractorsRouter);
 app.use('/api/project', projectsRouter);
 app.use('/api/question', questionRouter);
+app.use('/api/document', documentRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
