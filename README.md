@@ -31,3 +31,9 @@ One Stop Solution for:
  Chat
  notification
  -->
+
+Project manager dashboard
+Contrators  dashboard
+Project system
+->Intake form(Auction/Tender System)
+-->WorkLogs
