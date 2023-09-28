@@ -7,13 +7,16 @@ const projectSchema = mongoose.Schema(
       type: String,
       enum: ["DesignAI", "RenovateAI", "EstimateAI"],
      },
+    clientName: { type: String },
     clientPhNumber: { type: Number },
     address: { type: String },
     city: { type: String },
     state: { type: String },
     country: { type: String },
     zipcode: { type: Number },
-    startDate: { type: String },
+    startDate: { type: Date },
+    endDate: { type: Date },
+    moveDate: { type: Date },
     userId: { type: mongoose.Schema.Types.ObjectId }, // ref: "br_user_profile"
     status: {
       type: String,

@@ -62,7 +62,7 @@ const userRegisterContractor = async(req, res, next) =>{
         if(userExist.status&&userExist.data) throw({message: "User Already Registered" });
         const salt = await bcrypt.genSalt(SALT);
         password = await bcrypt.hash(password, salt);
-        let ownerId="aaa"//TODO fetch from token
+        let ownerId=req.user._id//TODO fetch from token
         userMiddleware.createRecord({fullName,email,password,phoneNumber,organizationName, role:"contractor", ownerId}).then((data) => {
             res.json(data);
           })

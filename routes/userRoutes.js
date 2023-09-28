@@ -11,10 +11,11 @@
 const express = require("express");
 const router = express.Router();
 const userController = require('../controllers/userController');
+const auth = require('../middlewares/tokenValidate');
 
 router.post("/register",userController.userRegister);
 router.post("/register/contractor",userController.userContractorRegister);
-router.post("/add/contractor",userController.userRegisterContractor);
+router.post("/add/contractor",auth.tokenValidation,userController.userRegisterContractor);
 router.post("/login",userController.userLogin);
 router.put("/resetpassword",userController.userResetPassword);
 router.post("/forgot/password",userController.userForgotPassword);

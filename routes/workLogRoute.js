@@ -11,6 +11,6 @@ router.get("/",workLogController.getAllWorkLog);
 router.get("/:id",workLogController.getWorkLog);
 router.put("/:id",workLogController.updateWorkLog);
 // Update the work log for approveal
-router.put("/:id",workLogController.updateWorkLog);
+router.put("/:id",workLogController.updateWorkLog); //need to get the token to differentiate between contrator and subcontractor 
 
 module.exports = router;

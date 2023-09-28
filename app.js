@@ -17,6 +17,7 @@ var projectContractorsRouter = require('./routes/projectContractorRoute');
 var questionRouter = require('./routes/securityQuestionRoutes');
 var documentRouter = require('./routes/documentRoute');
 var worklogRouter = require('./routes/workLogRoute');
+var intakeformsRouter = require('./routes/intakeFormRoute');
 var app = express();
 
 // view engine setup
@@ -39,6 +40,7 @@ app.use('/users', usersRouter);
 app.use('/api/user', userRouter);
 app.use('/api/project/contractor', projectContractorsRouter);
 app.use('/api/project', projectsRouter);
+app.use('/api/intakeform', intakeformsRouter);
 app.use('/api/question', questionRouter);
 app.use('/api/document', documentRouter);
 app.use('/api/worklog', worklogRouter);
