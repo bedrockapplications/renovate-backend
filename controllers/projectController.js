@@ -13,12 +13,17 @@ const createProject = (req, res, next) =>{
     });
 }
 
-const getProject = (req, res, next) =>{
+const getProject = async(req, res, next) =>{
+  try {
+
     let filterQuery = req.query;
     let projectQuery = {}
     filterQuery ={
         _id:req.params.id
     }
+    let dataaaa = await projectMiddleware.getSingleRecord({filterQuery, projectQuery});
+
+    console.log("========dataaaa",dataaaa)
     projectMiddleware.getSingleRecord({filterQuery, projectQuery}).then(data =>{
         res.json(data);
         // res.json({status:true, data});
@@ -26,6 +31,10 @@ const getProject = (req, res, next) =>{
         console.log("err===",err);
         res.json({status:false, message:err.message});
     }); 
+} catch (err) {
+    console.log("err===", err);
+    res.json({ status: false, message: err.message });
+  }
 }
 const getAllProject = (req, res, next) =>{
     let filterQuery = req.query;

@@ -8,8 +8,8 @@ const worklogSchema = mongoose.Schema(
       subject: { type: String },
       description: { type: String },
       images: { type: String },
-      logApproval: {type: Boolean},
-    //   logApproval: {type: Boolean},
+      // logApproval: {type: Boolean,},
+      logApproval: {type: String,enum: ["review", "pending", "approved"], default:"pending" },
       status: { type: String, enum: ["active", "inactive"], default: "active" },
   },
   {

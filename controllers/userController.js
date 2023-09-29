@@ -59,7 +59,7 @@ const userRegisterContractor = async(req, res, next) =>{
         let filterQuery = {email};
         let projectQuery = {};
         let userExist = await userMiddleware.getSingleRecord({filterQuery,projectQuery});
-        if(userExist.status&&userExist.data) throw({message: "User Already Registered" });
+        if(userExist.status && userExist.data) throw({message: "User Already Registered" });
         const salt = await bcrypt.genSalt(SALT);
         password = await bcrypt.hash(password, salt);
         let ownerId=req.user._id//TODO fetch from token
