@@ -61,7 +61,7 @@ const publishProject = (req, res, next) =>{
     filterQuery={
         _id:req.params.id
     }
-    // TODO need to add the mailing logic to send mails to all contractors
+    // TODO need to add the mailing logic to send mails to all contractors with service provided
     projectMiddleware.updateRecord({filterQuery, updateObj}).then(data =>{
         res.json(data);
         // res.json({status:true, data});

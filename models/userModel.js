@@ -80,6 +80,7 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
+    servicesProvided:[{type: String,}],
     updateDetail:{
       type: Boolean,
       default: false
