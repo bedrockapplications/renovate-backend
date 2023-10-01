@@ -33,16 +33,16 @@ const billingSchema = mongoose.Schema(
       achRoutingNumber: Number,
       achAccountNumber: Number,
       BillingAddress: {
-        street: String,
-        city: String,
-        state: String,
-        zipcode: String,
-        country: String,
+        street: {type:String},
+        city: {type:String},
+        state: {type:String},
+        zipcode: {type:String},
+        country: {type:String},
       },
       BillingContact: {
-        fullName: String,
-        contactNum: Number,
-        billEmail: String,
+        fullName:{type:String},
+        contactNum:{type: Number},
+        billEmail: {type:String},
       },
     },
     { _id: false }
@@ -83,8 +83,15 @@ const userSchema = new mongoose.Schema(
     servicesProvided:[{type: String,}],
     updateDetail:{
       type: Boolean,
-      default: false
+      default: true
     },
+    securityQuestions:{
+      questionId:{ type: mongoose.Schema.Types.ObjectId },
+      answer:{
+        type: String
+      }
+    },
+
     // securityQuestions: secQuesSchema,
 
     // TODO need check to see it can be made as a saparate collection
