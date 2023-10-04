@@ -25,7 +25,8 @@ const tokenValidation = async (req, res, next) => {
         }
     }
     catch (err) {
-        return res.json({ status: false, message: 'Something went wrong' });;
+        // console.log("err----", err)
+        return res.json({ status: false, message: err.message });;
     }
 }
 

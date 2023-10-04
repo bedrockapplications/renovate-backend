@@ -90,6 +90,25 @@ const updateRecordBulk =(query) =>{
         }
     });
 }
+const getAggregateRecord =(query) =>{
+    return new Promise(async (resolve, reject) =>{
+        try{
+            let {filterQuery, updateObj} = query;
+            let record = await projectWorkLog.aggregate({
+
+            });
+            resolve({
+                status:true,
+                data:record
+            })
+        }catch(err){
+            reject({
+                status:false,
+                message:err.message
+            })
+        }
+    });
+}
 // Need to add the custom middleware functions to operate on data as required
 
 module.exports = {

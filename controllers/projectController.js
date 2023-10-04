@@ -1,10 +1,10 @@
 const projectMiddleware = require("../middlewares/projectMiddleware");
 
 const createProject = (req, res, next) =>{
-    let {projectName,projectType,clientPhNumber,address,city,state,country,zipcode,startDate} =req.body;
+    let {projectName,projectType,clientPhNumber,address,city,state,country,zipcode,startDate,endDate,moveDate} =req.body;
     let userId = req.user._id;
-    if(!projectName||!projectType||!clientPhNumber||!address||!city||!state||!country||!zipcode||!startDate||!userId) throw({message:"Required fields are missing"});
-    projectMiddleware.createRecord({projectName,projectType,clientPhNumber,address,city,state,country,zipcode,startDate,userId}).then(data =>{
+    if(!projectName||!projectType||!clientPhNumber||!address||!city||!state||!country||!zipcode||!startDate||!endDate||!moveDate||!userId) throw({message:"Required fields are missing"});
+    projectMiddleware.createRecord({projectName,projectType,clientPhNumber,address,city,state,country,zipcode,startDate,endDate,moveDate,userId}).then(data =>{
         res.json(data);
         // res.json({status:true, data});
     }).catch(err=>{

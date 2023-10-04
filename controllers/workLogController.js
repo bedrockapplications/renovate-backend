@@ -1,4 +1,5 @@
 const workLogMiddleware = require("../middlewares/workLogMiddleware");
+const projectMiddleware = require("../middlewares/projectMiddleware");
 
 const createWorkLog = (req, res, next) => {
   // need to add the validations
@@ -151,63 +152,90 @@ const getAllWorkLog = (req, res, next) => {
 };
 
 const getAllContractorWorkLog = (req, res, next) => {
-    let filterQuery = req.query;
-    let projectQuery = {};
-    filterQuery = {
-        _id: req.params.id,
-      };
-    workLogMiddleware
-      .getAllRecords({ filterQuery, projectQuery })
-      .then((data) => {
-        res.json(data);
-        // res.json({status:true, data});
-      })
-      .catch((err) => {
-        console.log("err===", err);
-        res.json({ status: false, message: err.message });
-      });
-};
-
-const deleteWorkLog = async (req, res, next) => {
   let filterQuery = req.query;
-  let updateObj = {
-    status: "inactive",
-  };
+  let projectQuery = {};
   filterQuery = {
     _id: req.params.id,
   };
-  let projectQuery = {};
+  workLogMiddleware
+    .getAllRecords({ filterQuery, projectQuery })
+    .then((data) => {
+      res.json(data);
+      // res.json({status:true, data});
+    })
+    .catch((err) => {
+      console.log("err===", err);
+      res.json({ status: false, message: err.message });
+    });
+};
 
-  // fetch the workLog and check the logApproval
-  let workLogData = await workLogMiddleware.getSingleRecord({
-    filterQuery,
-    projectQuery,
-  });
+const deleteWorkLog = async (req, res, next) => {
+  try {
+    let filterQuery = req.query;
+    let updateObj = {
+      status: "inactive",
+    };
+    filterQuery = {
+      _id: req.params.id,
+    };
+    let projectQuery = {};
 
-  if (workLogData.status && workLogData.data) {
-    workLogData = workLogData.data;
-    if (workLogData.logApproval !== "pending")
-      res.json({ status: false, message: "Cannot Delete the Working" });
-    if (workLogData.contractorId !== req.user._id)
-      res.json({ status: false, message: "Not Authorized to Delete" });
+    // fetch the workLog and check the logApproval
+    let workLogData = await workLogMiddleware.getSingleRecord({
+      filterQuery,
+      projectQuery,
+    });
 
-    workLogMiddleware
-      .updateRecord({ filterQuery, updateObj })
-      .then((data) => {
-        res.json(data);
-        // res.json({status:true, data});
-      })
-      .catch((err) => {
-        console.log("err===", err);
-        res.json({ status: false, message: err.message });
-      });
+    if (workLogData.status && workLogData.data) {
+      workLogData = workLogData.data;
+      if (workLogData.logApproval !== "pending")
+        res.json({ status: false, message: "Cannot Delete the Working" });
+      if (workLogData.contractorId !== req.user._id)
+        res.json({ status: false, message: "Not Authorized to Delete" });
+
+      workLogMiddleware
+        .updateRecord({ filterQuery, updateObj })
+        .then((data) => {
+          res.json(data);
+          // res.json({status:true, data});
+        })
+        .catch((err) => {
+          console.log("err===", err);
+          res.json({ status: false, message: err.message });
+        });
+    }
+  } catch (err) {
+    console.log("err===", err);
+    res.json({ status: false, message: err.message });
   }
 };
 
 // project id group by contractor details
-const getAllProjectWorkLog = (req, res, next) => {
+const getAllProjectWorkLog = async (req, res, next) => {
+  try{
   // TODO
   console.log("need to work on this");
+  let filterQuery = req.query;
+  filterQuery = {
+    _id: req.params.id,
+  };
+  let projectQuery = {};
+  // get the project Detail and vaildate the user id
+  let projectDetail = await projectMiddleware.getSingleRecord({
+    filterQuery,
+    projectQuery,
+  });
+  if (projectDetail.status && projectDetail.data) {
+    if(projectDetail.data.userId !== req.user._id) res.json({ status: false, message: "Not Authorized to get the Data" });
+    
+    // call the aggregate function to fetch all the work log grouped by contractor
+    
+  }
+      
+} catch (err) {
+  console.log("err===", err);
+  res.json({ status: false, message: err.message });
+}
 };
 
 module.exports = {
@@ -218,7 +246,7 @@ module.exports = {
   getAllWorkLog,
   updateWorkLogApproval,
   deleteWorkLog,
-  getAllContractorWorkLog
+  getAllContractorWorkLog,
   // get all worklog for project_id
   // for mgr
   // get all worklog by project_id
