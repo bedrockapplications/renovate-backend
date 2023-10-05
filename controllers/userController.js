@@ -5,6 +5,8 @@ const shortid = require("shortid");
 // const SALT = 7;
 const SALT = parseInt(process.env.SALT);
 
+const { sendEmail } = require("../services/emailService");
+
 const userRegister = async (req, res, next) =>{
     try{
         let {fullName,email,password,phoneNumber,organizationName,} = req.body;
@@ -143,6 +145,7 @@ const userForgotPassword = async(req, res, next) =>{
         if(userExist.status && userExist.data){
             let temp_password = shortid.generate();
             // TODO need to send the generated password
+            sendEmail("forgot_password", { email: userExist.data.email, temp_password });
             console.log("temp_password----", temp_password);
             const salt = await bcrypt.genSalt(SALT);
             temp_password = await bcrypt.hash(temp_password, salt);
