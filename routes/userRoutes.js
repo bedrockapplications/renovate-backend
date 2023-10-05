@@ -19,5 +19,6 @@ router.post("/add/contractor",auth.tokenValidation,userController.userRegisterCo
 router.post("/login",userController.userLogin);
 router.put("/resetpassword",userController.userResetPassword);
 router.post("/forgot/password",userController.userForgotPassword);
+router.get("/details",userController.getUserDetails);
 
 module.exports = router;

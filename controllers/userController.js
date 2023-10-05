@@ -90,6 +90,7 @@ const userLogin = async(req, res, next) =>{
                 token: token,
                 email:userExist.data.email,
                 role:userExist.data.role,
+                user_id:userExist.data._id,
                 updateDetail:userExist.data.updateDetail,
                 resetPassword:userExist.data.resetPassword
             }
@@ -166,6 +167,34 @@ const userForgotPassword = async(req, res, next) =>{
     }
 }
 
+const getUserDetails = async (req, res, next) =>{
+    try{
+        let {_id, email, status}= req.query;
+        let filterQuery = {status:"active"};
+        if(!_id && !email) 
+            throw({message:"Required field is missing"});
+        if(_id) filterQuery._id = _id;
+        if(email) filterQuery.email = email;
+        if(status) filterQuery.status = status;
+
+        let projectQuery = {
+            password:0,
+            ownerId:0,
+            securityQuestions:0
+        };
+        let userExist = await userMiddleware.getSingleRecord({filterQuery,projectQuery});
+        if(userExist.status && userExist.data){
+            res.json(userExist);
+        }else{
+            throw({message:"Invaild User Input or the User is status in active"});
+        }
+
+    }catch(err){
+        console.log("err===", err);
+        res.json({ status: false, message: err.message });
+    }
+}
+
 module.exports = {
     userRegister,
     userContractorRegister,
@@ -173,5 +202,6 @@ module.exports = {
     userLogin,
     userResetPassword,
     userForgotPassword,
+    getUserDetails,
   };
   
