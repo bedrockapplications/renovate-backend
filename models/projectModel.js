@@ -23,6 +23,8 @@ const projectSchema = mongoose.Schema(
       enum: ["pending", "active", "paused", "completed", "cancelled"],
       default:"pending",
     },
+    documents:[{type: String}],
+    serviceNeeded:[{type: String}],
   },
   {
     timestamps: true,
