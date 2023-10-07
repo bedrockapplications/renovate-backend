@@ -1,8 +1,9 @@
 const intakeFormMiddleware = require("../middlewares/intakeFormMiddleware");
 
 const createIntakeform = (req, res, next) =>{
-
-    intakeFormMiddleware.createRecord({}).then(data =>{
+    let {projectId,comments,serviceNeeded,documents} =req.body;
+    if(!projectId||!comments||!documents||!serviceNeeded) throw({message:"Required fields are missing"});
+    intakeFormMiddleware.createRecord({projectId,comments,serviceNeeded,documents}).then(data =>{
         res.json(data);
     }).catch(err=>{
         console.log("err===",err);

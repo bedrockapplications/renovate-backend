@@ -1,9 +1,9 @@
 const email_templates = {
 
-  "forgot_password": {
-    subject: "Bedrock - Forgot Password",
-    text: (template_data) => `Hi,\n\nYour password is ${template_data.temp_password}`,
-    html: (template_data) => `<!DOCTYPE html>
+    "forgot_password": {
+        subject: "Bedrock - Forgot Password",
+        text: (template_data) => `Hi,\n\nYour password is ${template_data.temp_password}`,
+        html: (template_data) => `<!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -65,12 +65,12 @@ const email_templates = {
     </body>
     </html>
     `
-  },
-  //send mails to all contractors with service provided
-  "publish_project": {
-    subject: "Bedrock - New Project",
-    text: (template_data) => `Hi,\n\nA new project has been published. Please check your dashboard.`,
-    html: (template_data) => `<!DOCTYPE html>
+    },
+    //send mails to all contractors with service provided
+    "publish_project": {
+        subject: "Bedrock - New Project",
+        text: (template_data) => `Hi,\n\nA new project has been published. Please check your dashboard.`,
+        html: (template_data) => `<!DOCTYPE html>
     <html lang="en">
     
     <head>
@@ -127,16 +127,13 @@ const email_templates = {
         </div>
     </body>
     
-    </html>`    
+    </html>`
 
-  
+
+    }
 }
 
-
-
-
 module.exports = {
-  
-  email_templates,
+    email_templates,
 
 }

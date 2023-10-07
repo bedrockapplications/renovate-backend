@@ -24,7 +24,7 @@ const getAllRecords =(query) =>{
     return new Promise(async (resolve, reject)=>{
         try{
             let {filterQuery, projectQuery} = query;
-            let allRecords = await user.find(filterQuery, projectQuery);
+            let allRecords = await user.find(filterQuery, projectQuery).lean();
             resolve({
                 status:true,
                 data:allRecords

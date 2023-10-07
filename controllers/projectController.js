@@ -1,6 +1,7 @@
 const projectMiddleware = require("../middlewares/projectMiddleware");
 const userMiddleware = require("../middlewares/userMiddleware");
 const intakeFormMiddleware = require("../middlewares/intakeFormMiddleware");
+const { sendEmail } = require("../services/emailService");
 
 const createProject = (req, res, next) =>{
     // doc_link category need Done
@@ -67,49 +68,53 @@ const updateProject = (req, res, next) =>{
 }
 
 const publishProject = async (req, res, next) => {
-  try {
-    let filterQuery = req.query;
-    let updateObj = {
-      status: active,
-    };
-    filterQuery = {
-      _id: req.params.id,
-    };
-    let servicesArray =[] //need to fetch from the project intakeform
-    let intakefilterQuery = {projectId:req.params.id}
-    let intakeProjectQuery = {serviceNeeded:1}
-    let allIntakeForms = await intakeFormMiddleware.getAllRecords({
-        intakefilterQuery,
-        intakeProjectQuery,
-    })
-    if(allIntakeForms.status && allIntakeForms.data.length == 0) throw({message: "Cannot Publish a project without a Intakeform" });
-    servicesArray = allIntakeForms.data[0].serviceNeeded;
+    try {
+        let filterQuery = req.query;
+        let updateObj = {
+            status: "active",
+        };
+        filterQuery = {
+            _id: req.params.id,
+        };
+        let servicesArray = [] //need to fetch from the project intakeform
+        let intakefilterQuery = { projectId: req.params.id }
+        let intakeProjectQuery = { serviceNeeded: 1 }
+        let allIntakeForms = await intakeFormMiddleware.getAllRecords({
+            filterQuery:intakefilterQuery,
+            projectQuery:intakeProjectQuery,
+        })
+        if (allIntakeForms.status && allIntakeForms.data.length == 0) throw ({ message: "Cannot Publish a project without a Intakeform" });
+        servicesArray = allIntakeForms.data[0].serviceNeeded;
 
-    let userfilterQuery = { servicesProvided: { $in: servicesArray } };
-    let userProjectQuery = { email: 1 };
-    let serviceProviderEmails = await userMiddleware.getAllRecords({
-        userfilterQuery,
-        userProjectQuery,
-    });
-    let providerEmails = serviceProviderEmails.map(value => value.email);
-    console.log("providerEmails=====", providerEmails);
-    
-    // TODO need to add the mailing logic to send mails to all contractors with service provided
-    // mailing logic
-    projectMiddleware
-      .updateRecord({ filterQuery, updateObj })
-      .then((data) => {
-        res.json(data);
-        // res.json({status:true, data});
-      })
-      .catch((err) => {
+        let userfilterQuery = { servicesProvided: { $in: servicesArray } };
+        let userProjectQuery = { email: 1 };
+        let serviceProviderEmails = []
+        serviceProviderEmails = await userMiddleware.getAllRecords({
+            filterQuery: userfilterQuery,
+            projectQuery:userProjectQuery,
+        });
+        console.log("getAllRecords", serviceProviderEmails)
+        let providerEmails = serviceProviderEmails.data.map(value => value.email);
+        console.log("providerEmails=====", providerEmails);
+
+
+        // TODO need to add the mailing logic to send mails to all contractors with service provided
+        sendEmail("publish_project", { email: providerEmails });
+        // mailing logic
+        projectMiddleware
+            .updateRecord({ filterQuery, updateObj })
+            .then((data) => {
+                res.json(data);
+                // res.json({status:true, data});
+            })
+            .catch((err) => {
+                console.log("err===", err);
+                res.json({ status: false, message: err.message });
+            });
+    } catch (err) {
         console.log("err===", err);
         res.json({ status: false, message: err.message });
-      });
-  } catch (err) {
-    console.log("err===", err);
-    res.json({ status: false, message: err.message });
-  }
+    }
 };
 
 const deleteProject = (req, res, next) =>{

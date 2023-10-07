@@ -144,7 +144,7 @@ const userForgotPassword = async(req, res, next) =>{
         let userExist = await userMiddleware.getSingleRecord({filterQuery,projectQuery});
         if(userExist.status && userExist.data){
             let temp_password = shortid.generate();
-            // TODO need to send the generated password
+            // TODO need to send the generated password-Done
             sendEmail("forgot_password", { email: userExist.data.email, temp_password });
             console.log("temp_password----", temp_password);
             const salt = await bcrypt.genSalt(SALT);
