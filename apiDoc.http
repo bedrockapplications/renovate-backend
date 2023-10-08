@@ -45,6 +45,67 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjUxN
     "servicesProvided":["Carpenting","Flooring"]
 }
 
+# Update User Details Passing Bearer token
+###
+PUT  http://localhost:5000/api/user/update
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjUxNWExMjY0MGQwNDA4ODgwZDVlYTUyIiwiZW1haWwiOiJyb29wQGdtYWlsLmNvbSIsInJvbGUiOiJvd25lciIsImlhdCI6MTY5Njc1NzYzMiwiZXhwIjoxNjk2ODQ0MDMyfQ.eXIPntc2L_pVkdi-X-T4xWPE-O8jn6yv10yXH79mbUg
+
+{
+    "phoneNumber":"",
+    "fullName":""
+}
+
+# Register a user as Owner/porjectManager
+###
+POST  http://localhost:5000/api/user/register
+content-type: application/json
+
+{
+    "email":"roop@gmail.com",
+    "password":"123456789",
+    "fullName":"",
+    "phoneNumber":"",
+    "organizationName":""
+}
+
+# Register a user as contractor(service provider)
+###
+POST  http://localhost:5000/api/user/register/contractor
+content-type: application/json
+
+{
+    "email":"roop@gmail.com",
+    "password":"123456789",
+    "fullName":"",
+    "phoneNumber":"",
+    "organizationName":""
+}
+
+# Add/Register a user as contractor from Owner account Passing Bearer token
+###
+POST  http://localhost:5000/api/user/add/contractor
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjUxNWExMjY0MGQwNDA4ODgwZDVlYTUyIiwiZW1haWwiOiJyb29wQGdtYWlsLmNvbSIsInJvbGUiOiJvd25lciIsImlhdCI6MTY5Njc1NzYzMiwiZXhwIjoxNjk2ODQ0MDMyfQ.eXIPntc2L_pVkdi-X-T4xWPE-O8jn6yv10yXH79mbUg
+
+{
+    "email":"roop@gmail.com",
+    "password":"123456789",
+    "fullName":"",
+    "phoneNumber":"",
+    "organizationName":""
+}
+
+#Reset user password
+###
+POST  http://localhost:5000/api/user/resetpassword
+content-type: application/json
+
+{
+    "email":"roop@gmail.com",
+    "oldPassword":"123456789",
+    "newPassword":"123456789",
+}
 
 
 ###
