@@ -19,7 +19,7 @@ GET  http://localhost:5000/api/user/getdetails
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjUxNWExMjY0MGQwNDA4ODgwZDVlYTUyIiwiZW1haWwiOiJyb29wQGdtYWlsLmNvbSIsInJvbGUiOiJvd25lciIsImlhdCI6MTY5Njc1NzYzMiwiZXhwIjoxNjk2ODQ0MDMyfQ.eXIPntc2L_pVkdi-X-T4xWPE-O8jn6yv10yXH79mbUg
 
 
-# Get User Details Passing _id/email as query param
+# Get User Details Passing _id/email with status as query param
 ###
 GET  http://localhost:5000/api/user/details
     ?email=roop@gmail.com

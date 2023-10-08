@@ -30,7 +30,32 @@ const tokenValidation = async (req, res, next) => {
     }
 }
 
+const ownerValidation = async (req, res, next) => {
+  try {
+    let { role } = req.user;
+    if (role !== "owner")
+      throw { message: "UnAuthorised User for this Operation" };
+    next();
+  } catch (err) {
+    // console.log("err----", err)
+    return res.json({ status: false, message: err.message });
+  }
+};
+
+const contractorValidation = async (req, res, next) => {
+  try {
+    let { role } = req.user;
+    if (role !== "contractor")
+      throw { message: "UnAuthorised User for this Operation" };
+    next();
+  } catch (err) {
+    // console.log("err----", err)
+    return res.json({ status: false, message: err.message });
+  }
+};
 
 module.exports = {
-    tokenValidation
+    tokenValidation,
+    ownerValidation,
+    contractorValidation,
 }
