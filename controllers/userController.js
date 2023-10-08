@@ -222,6 +222,10 @@ const updateUserDetails = async (req, res, next) =>{
     }
 }
 
+const updateUserPic = async(req, res, next) =>{
+
+}
+
 const editServicesProvided = async (req, res, next) => {
   try {
     let user_id = req.user._id;
@@ -320,5 +324,6 @@ module.exports = {
     getallUser, //testing
     getUserDetail,
     editServicesProvided,
+    updateUserPic,
   };
   

@@ -13,6 +13,8 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 const auth = require('../middlewares/tokenValidate');
 
+const {s3MultipleFileUpload} = require('../utils/s3fileUpload');
+
 router.post("/register",userController.userRegister);
 router.post("/register/contractor",userController.userContractorRegister);
 router.post("/add/contractor",auth.tokenValidation,userController.userRegisterContractor);
@@ -23,6 +25,7 @@ router.get("/details",userController.getUserDetails);
 router.get("/getdetails",auth.tokenValidation,userController.getUserDetail);
 router.put("/update/security-question",auth.tokenValidation,userController.editUserSecurity);
 router.put("/update",auth.tokenValidation,userController.updateUserDetails);
+router.put("/updateImage",auth.tokenValidation,s3MultipleFileUpload.array('file', 1),userController.updateUserPic);
 router.put("/add/services",auth.tokenValidation,userController.editServicesProvided);
 router.get("/getall",userController.getallUser);
 

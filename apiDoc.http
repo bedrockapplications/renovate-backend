@@ -143,3 +143,37 @@ content-type: application/json
 # Delete a specific SecurityQuestion by ID
 ###
 DELETE http://localhost:5000/api/question/delete/65227ae06b3f85a4db705d2c
+
+
+###
+# -------------------------------------------------------------
+# ------------------------ProjectRoutes------------------------
+# -------------------------------------------------------------
+
+# Create a Project Passing Bearer token
+###
+POST http://localhost:5000/api/project/add
+# content-type: application/json
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjUxNWExMjY0MGQwNDA4ODgwZDVlYTUyIiwiZW1haWwiOiJyb29wQGdtYWlsLmNvbSIsInJvbGUiOiJvd25lciIsImlhdCI6MTY5Njc1NzYzMiwiZXhwIjoxNjk2ODQ0MDMyfQ.eXIPntc2L_pVkdi-X-T4xWPE-O8jn6yv10yXH79mbUg
+{
+    "projectName": "RK tower Cleaning upgarde",
+    "projectType": "RenovateAI",
+    "clientPhNumber": "9874563210",
+    "address": "No 11, 2nd Cross Road, New street",
+    "city": "New City1",
+    "state": "New State1",
+    "country": "NewContryLand1",
+    "zipcode": "1007",
+    "startDate": "01/10/2022",
+    "endDate": "01/5/2023",
+    "moveDate": "01/6/2023",
+    "serviceNeeded":[],
+    "documents":[]
+}
+
+# TODO need to add the image and other fields
+
+###
+GET http://localhost:5000/api/document/getDocs?userId=63976b12329e59674da31526
+

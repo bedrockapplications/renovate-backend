@@ -70,6 +70,7 @@ const getAllRecordsCustom =(query) =>{
             const limit = parseInt(query.limit) || 10;
             const uid = query.userId;
             const pid = query.projectId;
+            let value = query.fileName;
             let startIndex = pageNumber * limit;
             const endIndex = (pageNumber + 1) * limit;
             let dd = [];
@@ -79,25 +80,37 @@ const getAllRecordsCustom =(query) =>{
             let stLength = 0;
             let ptLength = 0;
             let filterQuery = {};
+            let filterArray =[];
             const result = {};
-            filterQuery.status="active";
-            if (uid !== "" && uid != undefined) {
-              filterQuery.userId = uid;
+            projectQuery = {
+                documents: 0
+            };
+            // filterQuery.status="active";
+            if (uid !== "" && uid !== undefined) {
+                filterArray.push({ userId: uid });
+                // filterQuery.userId = uid;
             }
-            if (pid !== "" && pid != undefined) {
-              filterQuery.projectId = pid;
+            if (pid !== "" && pid !== undefined) {
+                filterArray.push({ projectId: pid });
+                // filterQuery.projectId = pid;
             }
-            if (query.categoryType !== "" && query.categoryType != undefined) {
-              filterQuery.categoryType = query.categoryType;
+            if (query.categoryType !== "" && query.categoryType !== undefined) {
+                filterArray.push({ categoryType: req.query.categoryType });
+                // filterQuery.categoryType = query.categoryType;
             }
-            if (value != "" && value != undefined) {
-              filterQuery.fileName = { $regex: new RegExp("^" + value, "i") };
+            if (value !== "" && value !== undefined) {
+                filterArray.push({
+                    fileName: { $regex: new RegExp("^" + value, "i") },
+                  });
+            //   filterQuery.fileName = { $regex: new RegExp("^" + value, "i") };
             }
+            filterQuery={$and:filterArray}
             let allRecords = await document.find(filterQuery, projectQuery).populate({
                 path: "projectId",
                 select: ["projectName"],
               })
               .sort({ updatedAt: -1 });
+            //   console.log("allRecords====",allRecords)
               allRecords.forEach((e) => {
                 if (e.categoryType == "DesignDocuments") {
                     dd.push(e);
