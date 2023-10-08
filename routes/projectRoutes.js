@@ -4,7 +4,7 @@ const projectController = require('../controllers/projectController');
 const auth = require('../middlewares/tokenValidate');
 const {s3MultipleFileUpload} = require('../utils/s3fileUpload');
 
-router.post("/add",auth.tokenValidation,auth.ownerValidation,s3MultipleFileUpload.array('file', 3),projectController.createProject)
+router.post("/add",auth.tokenValidation,auth.ownerValidation,s3MultipleFileUpload.array('documents', 3),projectController.createProject)
 router.get("/get",projectController.getAllProject)
 router.get("/get/:id",projectController.getProject)
 router.put("/update/:id",auth.tokenValidation,auth.ownerValidation,projectController.updateProject)
