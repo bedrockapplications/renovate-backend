@@ -1,0 +1,84 @@
+###
+# -------------------------------------------------------------
+# --------------------------UserRoutes-------------------------
+# -------------------------------------------------------------
+
+# UserLogin
+###
+POST  http://localhost:5000/api/user/login
+content-type: application/json
+
+{
+    "email":"roop@gmail.com",
+    "password":"123456789"
+}
+
+# Get User Details Passing Bearer token
+###
+GET  http://localhost:5000/api/user/getdetails
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjUxNWExMjY0MGQwNDA4ODgwZDVlYTUyIiwiZW1haWwiOiJyb29wQGdtYWlsLmNvbSIsInJvbGUiOiJvd25lciIsImlhdCI6MTY5Njc1NzYzMiwiZXhwIjoxNjk2ODQ0MDMyfQ.eXIPntc2L_pVkdi-X-T4xWPE-O8jn6yv10yXH79mbUg
+
+
+# Get User Details Passing _id/email as query param
+###
+GET  http://localhost:5000/api/user/details
+    ?email=roop@gmail.com
+
+# Update User Security Question Passing Bearer token
+###
+PUT  http://localhost:5000/api/user/update/security-question
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjUxNWExMjY0MGQwNDA4ODgwZDVlYTUyIiwiZW1haWwiOiJyb29wQGdtYWlsLmNvbSIsInJvbGUiOiJvd25lciIsImlhdCI6MTY5Njc1NzYzMiwiZXhwIjoxNjk2ODQ0MDMyfQ.eXIPntc2L_pVkdi-X-T4xWPE-O8jn6yv10yXH79mbUg
+
+{
+    "questionId":"65227ae06b3f85a4db705d2c",
+    "answer":"Roop"
+}
+
+# Update User ServicesProviced Passing Bearer token
+###
+PUT  http://localhost:5000/api/user/add/services
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjUxNWExMjY0MGQwNDA4ODgwZDVlYTUyIiwiZW1haWwiOiJyb29wQGdtYWlsLmNvbSIsInJvbGUiOiJvd25lciIsImlhdCI6MTY5Njc1NzYzMiwiZXhwIjoxNjk2ODQ0MDMyfQ.eXIPntc2L_pVkdi-X-T4xWPE-O8jn6yv10yXH79mbUg
+
+{
+    "servicesProvided":["Carpenting","Flooring"]
+}
+
+
+
+###
+# -------------------------------------------------------------
+# ----------------------SecurityQuestions----------------------
+# -------------------------------------------------------------
+
+# Create SecurityQuestion
+###
+POST http://localhost:5000/api/question/add
+content-type: application/json
+
+{
+    "question":"What is your Name"
+}
+
+# Get All SecurityQuestion
+###
+GET http://localhost:5000/api/question/get
+
+# Get a specific SecurityQuestion by ID
+###
+GET http://localhost:5000/api/question/get/65227ae06b3f85a4db705d2c
+
+
+# Update a specific SecurityQuestion by ID
+###
+PUT http://localhost:5000/api/question/update/65227ae06b3f85a4db705d2c
+content-type: application/json
+
+{
+    "question":""
+}
+
+# Delete a specific SecurityQuestion by ID
+###
+DELETE http://localhost:5000/api/question/delete/65227ae06b3f85a4db705d2c

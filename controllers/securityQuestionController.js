@@ -35,8 +35,8 @@ const getAllQuestions = (req, res, next) => {
   let filterQuery = req.query;
   let projectQuery = {};
   if(req.query.status){
-    filterQuery = req.query.status
-  } else filterQuery ="active"
+    filterQuery.status = req.query.status
+  } else filterQuery.status ="active"
   sqMiddleware
     .getAllRecords({ filterQuery, projectQuery })
     .then((data) => {

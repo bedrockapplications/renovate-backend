@@ -20,5 +20,10 @@ router.post("/login",userController.userLogin);
 router.put("/resetpassword",userController.userResetPassword);
 router.post("/forgot/password",userController.userForgotPassword);
 router.get("/details",userController.getUserDetails);
+router.get("/getdetails",auth.tokenValidation,userController.getUserDetail);
+router.put("/update/security-question",auth.tokenValidation,userController.editUserSecurity);
+router.put("/update",auth.tokenValidation,userController.updateUserDetails);
+router.put("/add/services",auth.tokenValidation,userController.editServicesProvided);
+router.get("/getall",userController.getallUser);
 
 module.exports = router;

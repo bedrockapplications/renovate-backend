@@ -42,7 +42,7 @@ const getSingleRecord =(query) =>{
     return new Promise(async (resolve, reject)=>{
         try{
             let {filterQuery, projectQuery} = query;
-            let record = await user.findOne(filterQuery, projectQuery);
+            let record = await user.findOne(filterQuery, projectQuery).populate({path: 'securityQuestions.questionId', model: 'br_securityQuestion', select:'question'});
             resolve({
                 status:true,
                 data:record

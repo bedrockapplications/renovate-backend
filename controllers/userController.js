@@ -4,6 +4,7 @@ let bcrypt = require("bcrypt");
 const shortid = require("shortid");
 // const SALT = 7;
 const SALT = parseInt(process.env.SALT);
+const sqMiddleware = require("../middlewares/securityQuestionMiddleware");
 
 const { sendEmail } = require("../services/emailService");
 
@@ -189,7 +190,7 @@ const getUserDetails = async (req, res, next) =>{
         if(userExist.status && userExist.data){
             res.json(userExist);
         }else{
-            throw({message:"Invaild User Input or the User is status in active"});
+            throw({message:"Invaild User Input or the User is status in-active"});
         }
 
     }catch(err){
@@ -198,6 +199,114 @@ const getUserDetails = async (req, res, next) =>{
     }
 }
 
+const updateUserDetails = async (req, res, next) =>{
+    try{
+        let user_id = req.user._id;
+        // phoneNumber
+        // fullName
+        let filterQuery = {_id:user_id};
+        let updateObj = {};
+        if(req.body.phoneNumber && req.body.phoneNumber != "" && req.body.phoneNumber != undefined )
+            updateObj.phoneNumber = req.body.phoneNumber;
+        if(req.body.fullName && req.body.fullName != "" && req.body.fullName != undefined )
+            updateObj.fullName = req.body.fullName;
+        userMiddleware.updateRecord({filterQuery, updateObj}).then(data=>{
+                res.json({ status: true, message: "successfully Updated the Details" });
+            }).catch((err) => {
+                console.log("err===", err);
+                res.json({ status: false, message: err.message });
+            });
+    }catch(err){
+        console.log("err===", err);
+        res.json({ status: false, message: err.message });
+    }
+}
+
+const editServicesProvided = async (req, res, next) => {
+  try {
+    let user_id = req.user._id;
+    let filterQuery = { _id: user_id };
+    let updateObj = {};
+    if (req.body.servicesProvided) {
+      if (Array.isArray(req.body.servicesProvided)){
+          if (req.body.servicesProvided.length == 0) throw({message: "atleast One Service needs to be provided" });
+          updateObj.servicesProvided = req.body.servicesProvided;
+      }
+        else updateObj.servicesProvided = [req.body.servicesProvided];
+      userMiddleware
+        .updateRecord({ filterQuery, updateObj })
+        .then((data) => {
+          res.json({
+            status: true,
+            message: "successfully Updated the Details",
+          });
+        })
+        .catch((err) => {
+          console.log("err===", err);
+          res.json({ status: false, message: err.message });
+        });
+    }
+  } catch (err) {
+    console.log("err===", err);
+    res.json({ status: false, message: err.message });
+  }
+};
+
+const editUserSecurity = async (req, res, next) =>{
+    try{
+        let user_id = req.user._id;
+        let {questionId, answer} = req.body;
+        if(!questionId||!answer)  throw({message: "Required field Missing" });
+        let quetionDetails = await sqMiddleware.getSingleRecord({ filterQuery:{_id:questionId, status:"active"}, projectQuery:{} });
+        if(!quetionDetails.status || !quetionDetails.data) throw({message: "Invalid Question ID" });
+        let updateObj ={};
+        updateObj.securityQuestions = {
+            questionId,answer
+        }
+        userMiddleware.updateRecord({filterQuery:{_id:user_id}, updateObj}).then(data=>{
+            res.json({ status: true, message: "successfully Updated the Details" });
+        }).catch((err) => {
+            console.log("err===", err);
+            res.json({ status: false, message: err.message });
+        });
+    }catch(err){
+        console.log("err===", err);
+        res.json({ status: false, message: err.message });
+    }
+}
+
+const getallUser = (req, res, next) =>{
+    let filterQuery = req.query;
+  let projectQuery = {};
+  if(req.query.status){
+    filterQuery.status = req.query.status
+  } else filterQuery.status ="active"
+  userMiddleware
+    .getAllRecords({ filterQuery, projectQuery })
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => {
+      console.log("err===", err);
+      res.json({ status: false, message: err.message });
+    });
+}
+
+const getUserDetail = (req, res, next) =>{
+    let filterQuery = {
+        _id: req.user._id
+    };
+  let projectQuery = {};
+  userMiddleware
+    .getSingleRecord({ filterQuery, projectQuery })
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => {
+      console.log("err===", err);
+      res.json({ status: false, message: err.message });
+    });
+}
 module.exports = {
     userRegister,
     userContractorRegister,
@@ -206,5 +315,10 @@ module.exports = {
     userResetPassword,
     userForgotPassword,
     getUserDetails,
+    updateUserDetails,
+    editUserSecurity,
+    getallUser, //testing
+    getUserDetail,
+    editServicesProvided,
   };
   
