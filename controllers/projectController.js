@@ -8,7 +8,12 @@ const createProject = (req, res, next) =>{
     // Need to add the file uload logic
     let {projectName,projectType,clientPhNumber,address,city,state,country,zipcode,startDate,endDate,moveDate, documents, serviceNeeded} =req.body;
     let userId = req.user._id;
-    if(!projectName||!projectType||!clientPhNumber||!address||!city||!state||!country||!zipcode||!startDate||!endDate||!moveDate||!documents||!serviceNeeded ||!userId) throw({message:"Required fields are missing"});
+    let fileDate = req.files;
+    // filePath = fileDate.location;
+    let filesLoc = fileDate.map(value => value.location);
+    if(!projectName||!projectType||!clientPhNumber||!address||!city||!state||!country||!zipcode||!startDate||!endDate||!moveDate||!serviceNeeded ||!userId) throw({message:"Required fields are missing"});
+    if(!documents)
+    documents = [...filesLoc];
     projectMiddleware.createRecord({projectName,projectType,clientPhNumber,address,city,state,country,zipcode,startDate,endDate,moveDate,userId, documents, serviceNeeded}).then(data =>{
         res.json(data);
         // res.json({status:true, data});
