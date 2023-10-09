@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const projectContractorSchema = mongoose.Schema({
     projectId: { type: mongoose.Schema.Types.ObjectId},
     contractorId: { type: mongoose.Schema.Types.ObjectId},
-    status: { type: String, enum: ["active", "inactive"], default: "active" },
+    status: { type: String, enum: ["active", "completed", "inactive"], default: "active" },
   },
   {
     timestamps: true,

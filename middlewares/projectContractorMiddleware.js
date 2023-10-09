@@ -37,6 +37,25 @@ const getAllRecords =(query) =>{
     });
 }
 
+const getAllRecordsPopulate =(query) =>{
+    return new Promise(async (resolve, reject)=>{
+        try{
+            let {filterQuery, projectQuery} = query;
+            let allRecords = await project.find(filterQuery, projectQuery).populate([{path:'projectId', model:'br_project',select:'',populate:{path:'userId', model:'br_user_profile',select:['fullName','email', 'phoneNumber','organizationName','profilePic']}}]);
+            // let allRecords = await project.find(filterQuery, projectQuery).populate([{path:'projectId', model:'br_project',select:'',populate:{path:'userId', model:'br_user_profile',select:['fullName','email', 'phoneNumber','organizationName']}},{path:'contractorId', model:'br_user_profile',select:['fullName','email', 'phoneNumber','organizationName']}]);
+            resolve({
+                status:true,
+                data:allRecords
+            })
+        }catch(err){
+            reject({
+                status:false,
+                message:err.message
+            })
+        }
+    });
+}
+
 const getSingleRecord =(query) =>{
     return new Promise(async (resolve, reject)=>{
         try{
@@ -97,5 +116,6 @@ module.exports = {
     getAllRecords,
     getSingleRecord,
     updateRecord,
-    updateRecordBulk
+    updateRecordBulk,
+    getAllRecordsPopulate,
 }

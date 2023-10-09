@@ -223,7 +223,22 @@ const updateUserDetails = async (req, res, next) =>{
 }
 
 const updateUserPic = async(req, res, next) =>{
-
+    try{
+        let user_id = req.user._id;
+        if(!req.files[0]) throw ({ message: "Counldnot find the Image" });
+        let updateObj ={
+            profilePic:req.files[0].location
+        };
+        userMiddleware.updateRecord({filterQuery:{_id:user_id}, updateObj}).then(data=>{
+            res.json({ status: true, message: "successfully Updated the Profile Picture" });
+        }).catch((err) => {
+            console.log("err===", err);
+            res.json({ status: false, message: err.message });
+        });
+    }catch(err){
+        console.log("err===", err);
+        res.json({ status: false, message: err.message });
+    }
 }
 
 const editServicesProvided = async (req, res, next) => {

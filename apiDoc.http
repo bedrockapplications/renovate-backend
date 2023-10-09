@@ -35,6 +35,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjUxN
     "answer":"Roop"
 }
 
+# TODO still testing the file upload api call here
+# Update User profile picture Passing Bearer token
+###
+PUT  http://localhost:5000/api/user/updateImage
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjUxNWE3ZjI0NzdmYWZjMjZiYjA4ZDUzIiwiZW1haWwiOiJyb29wY29udHJhY3RvckBnbWFpbC5jb20iLCJyb2xlIjoiY29udHJhY3RvciIsImlhdCI6MTY5Njg4MTkzMywiZXhwIjoxNjk2OTY4MzMzfQ.90Sn9bYuIeAHjwIe8NmTMiFOO5rJLKwhbe8eUPrWl6A
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="profilePic"; filename="indirabg.png"
+Content-Type: image/png
+
+< ./indirabg.png
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+
 # Update User ServicesProviced Passing Bearer token
 ###
 PUT  http://localhost:5000/api/user/add/services
@@ -177,3 +191,27 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjUxN
 ###
 GET http://localhost:5000/api/document/getDocs?userId=63976b12329e59674da31526
 
+
+###
+# -------------------------------------------------------------
+# -------------------ProjectContractorRoutes-------------------
+# -------------------------------------------------------------
+
+
+# Add contrator to a project
+###
+POST http://localhost:5000/api/project/contractor/add
+content-type: application/json
+
+{
+"projectId":"651dab951bebd70dbc21ffc7",
+"contractorId":"6515a7f2477fafc26bb08d53"
+}
+
+
+
+# get all contractor's project
+###
+GET http://localhost:5000/api/project/contractor/get-projects
+    ?status=completed 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjUxNWE3ZjI0NzdmYWZjMjZiYjA4ZDUzIiwiZW1haWwiOiJyb29wY29udHJhY3RvckBnbWFpbC5jb20iLCJyb2xlIjoiY29udHJhY3RvciIsImlhdCI6MTY5Njg4MTkzMywiZXhwIjoxNjk2OTY4MzMzfQ.90Sn9bYuIeAHjwIe8NmTMiFOO5rJLKwhbe8eUPrWl6A

@@ -71,6 +71,7 @@ const userSchema = new mongoose.Schema(
       type: Number,
       required: [true, "please add a Phone Number"],
     },
+    profilePic:{type: String},
     role: {
         type: String, enum:["owner","contractor"],
     },
