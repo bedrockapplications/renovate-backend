@@ -56,7 +56,7 @@ const updateProjectBid = (req, res, next) =>{
     });
 }
 
-const getAllAppliedContractor = async (res, res, next)=>{
+const getAllAppliedContractor = async (req, res, next)=>{
     try{
         let {status}=req.query;
         let filterQuery = {};
@@ -82,7 +82,7 @@ const getAllAppliedContractor = async (res, res, next)=>{
       }
 }
 
-const getAllApplicantContractor = async (res, res, next)=>{
+const getAllApplicantContractor = async (req, res, next)=>{
     try{
         let {status, projectId}=req.query;
         let filterQuery = {};
