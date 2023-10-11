@@ -91,11 +91,48 @@ const updateRecordBulk =(query) =>{
     });
 }
 
+const getAllRecordsPopulate =(query) =>{
+    return new Promise(async (resolve, reject)=>{
+        try{
+            let {filterQuery, projectQuery} = query;
+            let allRecords = await projectBid.find(filterQuery, projectQuery).populate([{path:'projectId', model:'br_project',select:'',populate:{path:'userId', model:'br_user_profile',select:['fullName','email', 'phoneNumber','organizationName','profilePic']}}]);
+            resolve({
+                status:true,
+                data:allRecords
+            })
+        }catch(err){
+            reject({
+                status:false,
+                message:err.message
+            })
+        }
+    });
+}
+
+const getAllRecordsPopulateUser =(query) =>{
+    return new Promise(async (resolve, reject)=>{
+        try{
+            let {filterQuery, projectQuery} = query;
+            let allRecords = await project.find(filterQuery, projectQuery).populate([{path:'contractorId', model:'br_user_profile',select:['fullName','email', 'phoneNumber','organizationName', 'servicesProvided']}]);
+            resolve({
+                status:true,
+                data:allRecords
+            })
+        }catch(err){
+            reject({
+                status:false,
+                message:err.message
+            })
+        }
+    });
+}
 
 module.exports = {
     createRecord,
     getAllRecords,
     getSingleRecord,
     updateRecord,
-    updateRecordBulk
+    updateRecordBulk,
+    getAllRecordsPopulate,
+    getAllRecordsPopulateUser,
 }

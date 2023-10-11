@@ -10,8 +10,10 @@ router.put("/update/:id", projectContractorController.updateProjectContractor)
 router.delete("/delete/:id", projectContractorController.deleteProjectContractor)
 
 // Contractor API 
-
 router.get("/get-projects",auth.tokenValidation, auth.contractorValidation, projectContractorController.getAllContractorProjects)
+
+// ProjectManager API 
+router.get("/get-contractors",auth.tokenValidation, auth.ownerValidation, projectContractorController.getAllProjectContractors)
 
 
 module.exports = router;

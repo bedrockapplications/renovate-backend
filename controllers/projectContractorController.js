@@ -128,7 +128,34 @@ const getAllContractorProjects =async (req, res, next) =>{
   }
 }
 
+const getAllProjectContractors =async (req, res, next) =>{
+  try{
+    let {status, projectId} = req.query;
+    let filterQuery = {};
+    let projectQuery = {};
+    let userId = req.user._id;
+    filterQuery = {
+      projectId: projectId,
+    };
+    if(status) filterQuery.status = status;
+// add validation of projectid and project manager
+    let projectDetail = await projectMiddleware.getSingleRecord({filterQuery:{_id:projectId, userId:userId }, projectQuery:{}});
+    if(!projectDetail.status || !projectDetail.data) throw({message: "Couldn't find the project id for a given user" });
 
+    projectContractorMiddleware
+      .getAllRecordsPopulateUser({ filterQuery, projectQuery })
+      .then((data) => {
+        res.json(data);
+      })
+      .catch((err) => {
+        console.log("err===", err);
+        res.json({ status: false, message: err.message });
+      });
+  }catch (err) {
+    console.log("err===", err);
+    res.json({ status: false, message: err.message });
+  }
+}
 
 module.exports = {
     createProjectContractor,
@@ -137,5 +164,6 @@ module.exports = {
     updateProjectContractor,
     deleteProjectContractor,
     getAllContractorProjects,
+    getAllProjectContractors,
   };
   

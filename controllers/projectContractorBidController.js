@@ -1,4 +1,5 @@
 const projectBidMiddleware = require("../middlewares/projectContractorBidMiddleware");
+const projectMiddleware = require("../middlewares/projectMiddleware");
 
 
 const applyProjectBid = (req, res, next) =>{
@@ -55,11 +56,66 @@ const updateProjectBid = (req, res, next) =>{
     });
 }
 
+const getAllAppliedContractor = async (res, res, next)=>{
+    try{
+        let {status}=req.query;
+        let filterQuery = {};
+        let projectQuery = {};
+        let userId = req.user._id;
+        filterQuery = {
+          contractorId: userId,
+        };
+        if(status) filterQuery.status = status;
+    
+        projectBidMiddleware
+          .getAllRecordsPopulate({ filterQuery, projectQuery })
+          .then((data) => {
+            res.json(data);
+          })
+          .catch((err) => {
+            console.log("err===", err);
+            res.json({ status: false, message: err.message });
+          });
+    }catch (err) {
+        console.log("err===", err);
+        res.json({ status: false, message: err.message });
+      }
+}
 
+const getAllApplicantContractor = async (res, res, next)=>{
+    try{
+        let {status, projectId}=req.query;
+        let filterQuery = {};
+        let projectQuery = {};
+        let userId = req.user._id;
+        filterQuery = {
+            projectId: projectId,
+        };
+        if(status) filterQuery.status = status;
+// add validation of projectid and project manager
+        let projectDetail = await projectMiddleware.getSingleRecord({filterQuery:{_id:projectId, userId:userId }, projectQuery:{}});
+        if(!projectDetail.status || !projectDetail.data) throw({message: "Couldn't find the project id for a given user" });
+
+        projectBidMiddleware
+          .getAllRecordsPopulate({ filterQuery, projectQuery })
+          .then((data) => {
+            res.json(data);
+          })
+          .catch((err) => {
+            console.log("err===", err);
+            res.json({ status: false, message: err.message });
+          });
+    }catch (err) {
+        console.log("err===", err);
+        res.json({ status: false, message: err.message });
+      }
+}
 
 module.exports ={
     applyProjectBid,
     getProjectBid,
     getAllProjectBid,
     updateProjectBid,
+    getAllAppliedContractor,
+    getAllApplicantContractor,
 }
