@@ -1,18 +1,29 @@
 const projectBidMiddleware = require("../middlewares/projectContractorBidMiddleware");
 const projectMiddleware = require("../middlewares/projectMiddleware");
+const projectContractorMiddleware = require("../middlewares/projectContractorMiddleware");
 
 
-const applyProjectBid = (req, res, next) =>{
-    let {projectName,projectType,clientPhNumber,address,city,state,country,zipcode,startDate} =req.body;
+const applyProjectBid = async (req, res, next) =>{
+    try{
+    let {projectId,servicesProvided,comment,amount,currency,documentLink} =req.body;
+    // let {projectName,projectType,clientPhNumber,address,city,state,country,zipcode,startDate} =req.body;
     let userId = req.user._id;
-    if(!projectName||!projectType||!clientPhNumber||!address||!city||!state||!country||!zipcode||!startDate||!userId) throw({message:"Required fields are missing"});
-    projectBidMiddleware.createRecord({projectName,projectType,clientPhNumber,address,city,state,country,zipcode,startDate,userId}).then(data =>{
+    if(!projectId||!servicesProvided||!comment||!amount||!currency) throw({message:"Required fields are missing"});
+    let projectDetail = await projectMiddleware.getSingleRecord({filterQuery:{_id:projectId }, projectQuery:{}});
+    if(!projectDetail.status || !projectDetail.data) throw({message: "Couldn't find the project for the given id" });
+    let fileDate = req.files;
+    let filesLoc = fileDate.map(value => value.location);
+    projectBidMiddleware.createRecord({projectId,contractorId:userId,servicesProvided,comment,amount,currency,documentLink:[...filesLoc]}).then(data =>{
         res.json(data);
         // res.json({status:true, data});
     }).catch(err=>{
         console.log("err===",err);
         res.json({status:false, message:err.message});
     });
+}catch (err) {
+    console.log("err===", err);
+    res.json({ status: false, message: err.message });
+  }
 }
 
 const getProjectBid = (req, res, next) =>{
@@ -111,6 +122,40 @@ const getAllApplicantContractor = async (req, res, next)=>{
       }
 }
 
+
+// updating the status can be done here
+const updateProjectBidStatus = async(req, res, next) =>{
+    try{
+        let filterQuery = req.query
+        let {status} = req.body
+        filterQuery={
+            _id:req.params.id
+        }
+        let bidingDetail = await projectBidMiddleware.getSingleRecord({filterQuery, projectQuery:{}});
+        if(!bidingDetail.status || !bidingDetail.data) throw({message: "Couldn't find the project bid details" });
+        let userId = req.user._id;
+        let projectDetail = await projectMiddleware.getSingleRecord({filterQuery:{_id:bidingDetail.data.projectId,userId:userId }, projectQuery:{}});
+        if(!projectDetail.status || !projectDetail.data) throw({message: "Not permitted to Update the Project Bid" });
+
+        if(status == 'selected'){
+            // added the record to project contractor
+            let projectContractor = await projectContractorMiddleware({projectId:dbiingDetail.data.projectId,contractorId:bidingDetail.data.contractorId });
+            console.log("added the contractor to a project")
+        }
+        projectBidMiddleware.updateRecord({filterQuery, updateObj}).then(data =>{
+            res.json(data);
+            // res.json({status:true, data});
+        }).catch(err=>{
+            console.log("err===",err);
+            res.json({status:false, message:err.message});
+        });
+    }catch (err) {
+        console.log("err===", err);
+        res.json({ status: false, message: err.message });
+      }
+}
+
+
 module.exports ={
     applyProjectBid,
     getProjectBid,
@@ -118,4 +163,5 @@ module.exports ={
     updateProjectBid,
     getAllAppliedContractor,
     getAllApplicantContractor,
+    updateProjectBidStatus,
 }
