@@ -9,7 +9,8 @@ const {s3MultipleFileUpload} = require('../utils/s3fileUpload');
 // Get all work log for a contrator and a project
 // Get all work log for a project group by cantractor
 // Approve the Worklog
-router.post("/create", s3MultipleFileUpload.array('file', 3), auth.tokenValidation, workLogController.createWorkLog);
+// router.post("/create", s3MultipleFileUpload.array('images', 3), auth.tokenValidation, workLogController.createWorkLog);
+router.post("/create", auth.tokenValidation, s3MultipleFileUpload.fields([{ name: 'images', maxCount: 3 }, { name: 'sign', maxCount: 1 }]), workLogController.createWorkLog);
 router.get("/", workLogController.getAllWorkLog);
 router.get("/:id", workLogController.getWorkLog);
 router.get("/contractor/:id", auth.tokenValidation, workLogController.getAllContractorWorkLog);

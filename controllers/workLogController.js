@@ -3,18 +3,71 @@ const projectMiddleware = require("../middlewares/projectMiddleware");
 
 const createWorkLog = (req, res, next) => {
   // need to add the validations
-  let { projectId, projectManagerId, subject, description, images } = req.body;
+
+  // ===date
+  // ===time
+  // pow ===% of work completed
+  //       ===project
+  //       ===reporting person
+  //       ===address
+  //       ===country
+  //       ===state
+  //       ===city
+  //       ===zipcode
+  // weatherStatus ===weather status
+  // groundCondition===ground conditions
+  // weatherComment===weather comments
+  // scheduleData===schedule (list of objects)
+  // manpowerData===manpower (list of objects)
+  // vistorsData===vistors (list of objects)
+  // inventoryData===inventory (list of objects)
+  // onsiteIssueData===onsite issues (list of objects)
+  // images ===uploads
+  // comment===comments
+  // sign ===signature upload
+
+  let {
+    projectId,
+    projectManagerId,
+    date,
+    time,
+    comment,
+    scheduleData,
+    manpowerData,
+    vistorsData,
+    inventoryData,
+    onsiteIssueData,
+    weatherStatus,
+    weatherComment,
+    groundCondition,
+    pow,
+  } = req.body;
   let contractorId = req.user._id;
-  if (!projectId || !projectManagerId || !subject || !description || !images)
+  if (!projectId || !projectManagerId)
     throw { message: "Required fields are missing" };
+  let images, sign;
+  sign = req.files.sign[0].location;
+  images = req.files.images;
+  images = images.map((value) => value.location);
   workLogMiddleware
     .createRecord({
       projectId,
       projectManagerId,
-      subject,
-      description,
-      images,
       contractorId,
+      date,
+      time,
+      comment,
+      scheduleData,
+      manpowerData,
+      vistorsData,
+      inventoryData,
+      onsiteIssueData,
+      weatherStatus,
+      weatherComment,
+      groundCondition,
+      images,
+      sign,
+      pow,
     })
     .then((data) => {
       res.json(data);
