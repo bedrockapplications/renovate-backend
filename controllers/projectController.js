@@ -23,29 +23,31 @@ const createProject = (req, res, next) =>{
     });
 }
 
-const getProject = async(req, res, next) =>{
+const getProject = async (req, res, next) => {
   try {
-
     let filterQuery = req.query;
-    let projectQuery = {}
-    filterQuery ={
-        _id:req.params.id
-    }
+    let projectQuery = {};
+    filterQuery = {
+      _id: req.params.id,
+    };
     // let dataaaa = await projectMiddleware.getSingleRecord({filterQuery, projectQuery});
 
     // console.log("========dataaaa",dataaaa)
-    projectMiddleware.getSingleRecord({filterQuery, projectQuery}).then(data =>{
+    projectMiddleware
+      .getSingleRecord({ filterQuery, projectQuery })
+      .then((data) => {
         res.json(data);
         // res.json({status:true, data});
-    }).catch(err=>{
-        console.log("err===",err);
-        res.json({status:false, message:err.message});
-    }); 
-} catch (err) {
+      })
+      .catch((err) => {
+        console.log("err===", err);
+        res.json({ status: false, message: err.message });
+      });
+  } catch (err) {
     console.log("err===", err);
     res.json({ status: false, message: err.message });
   }
-}
+};
 
 const getAllProject = (req, res, next) =>{
     let filterQuery = req.query;
@@ -59,43 +61,91 @@ const getAllProject = (req, res, next) =>{
     }); 
 }
 
-const getMyProject = async(req, res, next) =>{ 
-    try{
+const getMyProject = async (req, res, next) => {
+  try {
     let filterQuery = {};
     let projectQuery = {};
     let userId = req.user._id;
     filterQuery = {
-        userId
+      userId,
     };
-    let {status} = req.query;
-    if(status) filterQuery.status = status;
-    projectMiddleware.getAllRecords({filterQuery, projectQuery}).then(data =>{
+    let { status } = req.query;
+    if (status) filterQuery.status = status;
+    projectMiddleware
+      .getAllRecords({ filterQuery, projectQuery })
+      .then((data) => {
         res.json(data);
         // res.json({status:true, data});
-    }).catch(err=>{
-        console.log("err===",err);
-        res.json({status:false, message:err.message});
-    });
-}catch (err) {
+      })
+      .catch((err) => {
+        console.log("err===", err);
+        res.json({ status: false, message: err.message });
+      });
+  } catch (err) {
     console.log("err===", err);
     res.json({ status: false, message: err.message });
-  } 
-}
+  }
+};
 
-const updateProject = (req, res, next) =>{
-    let filterQuery = req.query
-    let updateObj = req.body
-    filterQuery={
-        _id:req.params.id
-    }
-    projectMiddleware.updateRecord({filterQuery, updateObj}).then(data =>{
+const updateProject = async (req, res, next) => {
+  try {
+    let filterQuery = {};
+    // let updateObj = req.body;
+    let updateObj = {};
+    let {
+      projectName,
+      clientName,
+      projectDescription,
+      clientPhNumber,
+      address,
+      city,
+      state,
+      country,
+      zipcode,
+      startDate,
+      endDate,
+      moveDate,
+    } = req.body;
+    if (projectName) updateObj.projectName = projectName;
+    if (clientName) updateObj.clientName = clientName;
+    if (projectDescription) updateObj.projectDescription = projectDescription;
+    if (clientPhNumber) updateObj.clientPhNumber = clientPhNumber;
+    if (address) updateObj.address = address;
+    if (city) updateObj.city = city;
+    if (state) updateObj.state = state;
+    if (country) updateObj.country = country;
+    if (zipcode) updateObj.zipcode = zipcode;
+    if (startDate) updateObj.startDate = startDate;
+    if (endDate) updateObj.endDate = endDate;
+    if (moveDate) updateObj.moveDate = moveDate;
+
+    filterQuery = {
+        _id: req.params.id,
+      };
+      let userId = req.user._id;
+
+    projectDetails = await projectMiddleware.getSingleRecord({
+      filterQuery: { _id: projectId,userId: userId },
+      projectQuery: {},
+    });
+    if (!projectDetails.status || !projectDetails.data)
+      throw { message: "Could not find the Project" };
+    
+    projectMiddleware
+      .updateRecord({ filterQuery, updateObj })
+      .then((data) => {
         res.json(data);
         // res.json({status:true, data});
-    }).catch(err=>{
-        console.log("err===",err);
-        res.json({status:false, message:err.message});
-    });
-}
+      })
+      .catch((err) => {
+        console.log("err===", err);
+        res.json({ status: false, message: err.message });
+      });
+  } catch (err) {
+    console.log("err===", err);
+    res.json({ status: false, message: err.message });
+  }
+};
 
 const publishProject = async (req, res, next) => {
     try {
