@@ -6,15 +6,15 @@ const { sendEmail } = require("../services/emailService");
 const createProject = (req, res, next) =>{
     // doc_link category need Done
     // Need to add the file uload logic
-    let {projectName,clientName,projectType,clientPhNumber,address,city,state,country,zipcode,startDate,endDate,moveDate, documents, serviceNeeded} =req.body;
+    let {projectName,clientName,projectType,projectDescription,clientPhNumber,address,city,state,country,zipcode,startDate,endDate,moveDate, documents, serviceNeeded} =req.body;
     let userId = req.user._id;
     let fileDate = req.files;
     // filePath = fileDate.location;
     let filesLoc = fileDate.map(value => value.location);
-    if(!projectName || !clientName ||!projectType||!clientPhNumber||!address||!city||!state||!country||!zipcode||!startDate||!endDate||!moveDate||!serviceNeeded ||!userId) throw({message:"Required fields are missing"});
+    if(!projectName || !clientName ||!projectType|| !projectDescription || !clientPhNumber||!address||!city||!state||!country||!zipcode||!startDate||!endDate||!moveDate||!serviceNeeded ||!userId) throw({message:"Required fields are missing"});
     if(!documents)
     documents = [...filesLoc];
-    projectMiddleware.createRecord({projectName,clientName,projectType,clientPhNumber,address,city,state,country,zipcode,startDate,endDate,moveDate,userId, documents, serviceNeeded}).then(data =>{
+    projectMiddleware.createRecord({projectName,clientName,projectType,projectDescription,clientPhNumber,address,city,state,country,zipcode,startDate,endDate,moveDate,userId, documents, serviceNeeded}).then(data =>{
         res.json(data);
         // res.json({status:true, data});
     }).catch(err=>{

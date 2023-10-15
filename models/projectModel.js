@@ -8,6 +8,7 @@ const projectSchema = mongoose.Schema(
       enum: ["DesignAI", "RenovateAI", "EstimateAI"],
      },
     clientName: { type: String },
+    projectDescription: { type: String },
     clientPhNumber: { type: Number },
     address: { type: String },
     city: { type: String },
