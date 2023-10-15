@@ -46,6 +46,7 @@ const getProject = async(req, res, next) =>{
     res.json({ status: false, message: err.message });
   }
 }
+
 const getAllProject = (req, res, next) =>{
     let filterQuery = req.query;
     let projectQuery = {}
@@ -57,6 +58,30 @@ const getAllProject = (req, res, next) =>{
         res.json({status:false, message:err.message});
     }); 
 }
+
+const getMyProject = async(req, res, next) =>{ 
+    try{
+    let filterQuery = {};
+    let projectQuery = {};
+    let userId = req.user._id;
+    filterQuery = {
+        userId
+    };
+    let {status} = req.query;
+    if(status) filterQuery.status = status;
+    projectMiddleware.getAllRecords({filterQuery, projectQuery}).then(data =>{
+        res.json(data);
+        // res.json({status:true, data});
+    }).catch(err=>{
+        console.log("err===",err);
+        res.json({status:false, message:err.message});
+    });
+}catch (err) {
+    console.log("err===", err);
+    res.json({ status: false, message: err.message });
+  } 
+}
+
 const updateProject = (req, res, next) =>{
     let filterQuery = req.query
     let updateObj = req.body
@@ -144,5 +169,6 @@ module.exports ={
     getAllProject,
     updateProject,
     deleteProject,
-    publishProject
+    publishProject,
+    getMyProject,
 }
