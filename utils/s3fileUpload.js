@@ -5,17 +5,12 @@ const multerS3 = require("multer-s3");
 const path = require("path")
 
 // const moment = require('moment');
-let accessKeyId= process.env.S3_ACCESS_KEY;
-let secretAccessKey= process.env.S3_SECRET_ACCESS_KEY;
-let region= process.env.S3_BUCKET_REGION;
 
 const s3 = new aws.S3({
     // accessKeyId: process.env.S3_ACCESS_KEY,
     // secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
     // region: process.env.S3_BUCKET_REGION,
-    accessKeyId: accessKeyId,
-    secretAccessKey: secretAccessKey,
-    region: region
+
   });
 
 //   const s3 = new S3Client({
@@ -40,9 +35,9 @@ const s3MultipleFileUpload = multer({
       },
   }),
   limits: { fileSize: maxSize },
-  fileFilter: function (req, file, cb) {
-    checkFileType(file, cb);
-  },
+  // fileFilter: function (req, file, cb) {
+  //   checkFileType(file, cb);
+  // },
 });
 
 function checkFileType(file, cb) {
