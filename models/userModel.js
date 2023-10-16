@@ -96,7 +96,7 @@ const userSchema = new mongoose.Schema(
     // securityQuestions: secQuesSchema,
 
     // TODO need check to see it can be made as a saparate collection
-    // companyInformation: companySchema,
+    companyInformation: companySchema,
     // billingInformation: billingSchema,
     status: { type: String, enum: ["active", "inactive"], default: "active" },
   },

@@ -199,131 +199,141 @@ const getUserDetails = async (req, res, next) =>{
     }
 }
 
-const updateUserDetails = async (req, res, next) =>{
-    try{
-        let user_id = req.user._id;
-        // phoneNumber
-        // fullName
-        let filterQuery = {_id:user_id};
-        let updateObj = {};
-        let {
-            phoneNumber,
-            fullName,
-            companyName,
-            companyPhNumber,
-            companycurrentAddress,
-            emergencyContact,
-            // street,
-            // city,
-            // state,
-            // zipcode,
-            // country,
-            // fullName,
-            // contactNum,
-            // relationship,
-        } = req.body
-        let userDetail = await userMiddleware.getSingleRecord({filterQuery,projectQuery:{}});
-        if(userDetail.data.updateDetail == false){
-            let {
-                street,
-            city,
-            state,
-            zipcode,
-            country,
-            } = companycurrentAddress;
-            if(
-                companyName&& companyName !==""&&
-                companyPhNumber&& companyPhNumber !==""&&
-                street&& street !==""&&
-                city&& city !==""&&
-                state&& state !==""&&
-                zipcode&& zipcode !==""&&
-                country&& country !==""&&
-                emergencyContact.fullName&& emergencyContact.fullName !==""&&
-                emergencyContact.contactNum&& emergencyContact.contactNum !==""&&
-                emergencyContact.relationship&& emergencyContact.relationship !==""
-            )
-            updateObj.updateDetail = true;
-            
-        }
-            // do some validation 
-            // if()
-            // companyName
-            // companyPhNumber
-            // companycurrentAddress: {
-            //     street
-            //     city
-            //     state
-            //     zipcode
-            //     country
-            // },
-            // emergencyContact: {
-            //     fullName
-            //     contactNum
-            //     relationship
-            //     }
-        if(phoneNumber && phoneNumber != "" && phoneNumber != undefined )
-            updateObj.phoneNumber = phoneNumber;
-        if(fullName && fullName != "" && fullName != undefined )
-            updateObj.fullName = fullName;
+const updateUserDetails = async (req, res, next) => {
+  try {
+    let user_id = req.user._id;
+    // phoneNumber
+    // fullName
+    let filterQuery = { _id: user_id };
+    let updateObj = {};
+    let {
+      phoneNumber,
+      fullName,
+      companyName,
+      companyPhNumber,
+      companycurrentAddress,
+      emergencyContact,
+      // street,
+      // city,
+      // state,
+      // zipcode,
+      // country,
+      // fullName,
+      // contactNum,
+      // relationship,
+    } = req.body;
+    let userDetail = await userMiddleware.getSingleRecord({
+      filterQuery,
+      projectQuery: {},
+    });
+    if (userDetail.data.updateDetail == false) {
+      let { street, city, state, zipcode, country } = companycurrentAddress;
+      if (
+        companyName &&
+        companyName !== "" &&
+        companyPhNumber &&
+        companyPhNumber !== "" &&
+        street &&
+        street !== "" &&
+        city &&
+        city !== "" &&
+        state &&
+        state !== "" &&
+        zipcode &&
+        zipcode !== "" &&
+        country &&
+        country !== "" &&
+        emergencyContact.fullName &&
+        emergencyContact.fullName !== "" &&
+        emergencyContact.contactNum &&
+        emergencyContact.contactNum !== "" &&
+        emergencyContact.relationship &&
+        emergencyContact.relationship !== ""
+      )
+        updateObj.updateDetail = true;
+    }
+    // do some validation
+    // if()
+    // companyName
+    // companyPhNumber
+    // companycurrentAddress: {
+    //     street
+    //     city
+    //     state
+    //     zipcode
+    //     country
+    // },
+    // emergencyContact: {
+    //     fullName
+    //     contactNum
+    //     relationship
+    //     }
+    updateObj.companyInformation={};
+    if (phoneNumber && phoneNumber !== "" && phoneNumber !== undefined)
+      updateObj.phoneNumber = phoneNumber;
+    if (fullName && fullName !== "" && fullName !== undefined)
+      updateObj.fullName = fullName;
 
-        if(companyName && companyName != "" )
-            updateObj.companyName = companyName;
-        if(companyPhNumber && companyPhNumber != "" )
-            updateObj.companyPhNumber = companyPhNumber;
-        // Company address obj
-        let companycurrentAddressObj={};
-        companycurrentAddressObj = userDetail.data.companycurrentAddress;
-        if(street && street != "" ){
-            companycurrentAddressObj.street = street;
-            updateObj.companycurrentAddress =companycurrentAddressObj;
-        }
-        if(city && city != "" ){
-            companycurrentAddressObj.city = city;
-            updateObj.companycurrentAddress =companycurrentAddressObj;
-        }
-        if(city && city != "" ){
-            companycurrentAddressObj.city = city;
-            updateObj.companycurrentAddress =companycurrentAddressObj;
-        }
-        if(state && state != "" ){
-            companycurrentAddressObj.state = state;
-            updateObj.companycurrentAddress =companycurrentAddressObj;
-        }
-        if(zipcode && zipcode != "" ){
-            companycurrentAddressObj.zipcode = zipcode;
-            updateObj.companycurrentAddress =companycurrentAddressObj;
-        }
-        if(country && country != "" ){
-            companycurrentAddressObj.country = country;
-            updateObj.companycurrentAddress =companycurrentAddressObj;
-        }
-        // emergency contact obj
-        let emergencyContactObj ={};
-        emergencyContactObj=userDetail.data.emergencyContact;
-        if(emergencyContact.fullName && emergencyContact.fullName != "" ){
-            emergencyContactObj.fullName = emergencyContact.fullName;
-            updateObj.emergencyContact=emergencyContactObj;
-        }
-        if(emergencyContact.contactNum && emergencyContact.contactNum != "" ){
-            emergencyContactObj.contactNum = emergencyContact.contactNum;
-            updateObj.emergencyContact=emergencyContactObj;
-        }
-        if(emergencyContact.relationship && emergencyContact.relationship != "" ){
-            emergencyContactObj.relationship = emergencyContact.relationship;
-            updateObj.emergencyContact=emergencyContactObj;
-        }
-        userMiddleware.updateRecord({filterQuery, updateObj}).then(data=>{
-                res.json({ status: true, message: "successfully Updated the Details" });
-            }).catch((err) => {
-                console.log("err===", err);
-                res.json({ status: false, message: err.message });
-            });
-    }catch(err){
+    if (companyName && companyName !== "") 
+        updateObj.companyInformation.companyName = companyName;
+    if (companyPhNumber && companyPhNumber !== "")
+      updateObj.companyInformation.companyPhNumber = companyPhNumber;
+    // Company address obj
+    let companycurrentAddressObj = {};
+    companycurrentAddressObj = userDetail.data.companycurrentAddress;
+    if (street && street !== "") {
+      companycurrentAddressObj.street = street;
+      updateObj.companyInformation.companycurrentAddress = companycurrentAddressObj;
+    }
+    if (city && city !== "") {
+      companycurrentAddressObj.city = city;
+      updateObj.companyInformation.companycurrentAddress = companycurrentAddressObj;
+    }
+    if (city && city !== "") {
+      companycurrentAddressObj.city = city;
+      updateObj.companyInformation.companycurrentAddress = companycurrentAddressObj;
+    }
+    if (state && state !== "") {
+      companycurrentAddressObj.state = state;
+      updateObj.companyInformation.companycurrentAddress = companycurrentAddressObj;
+    }
+    if (zipcode && zipcode !== "") {
+      companycurrentAddressObj.zipcode = zipcode;
+      updateObj.companyInformation.companycurrentAddress = companycurrentAddressObj;
+    }
+    if (country && country !== "") {
+      companycurrentAddressObj.country = country;
+      updateObj.companyInformation.companycurrentAddress = companycurrentAddressObj;
+    }
+    // emergency contact obj
+    let emergencyContactObj = {};
+    emergencyContactObj = userDetail.data.emergencyContact;
+    if (emergencyContact.fullName && emergencyContact.fullName !== "") {
+      emergencyContactObj.fullName = emergencyContact.fullName;
+      updateObj.companyInformation.emergencyContact = emergencyContactObj;
+    }
+    if (emergencyContact.contactNum && emergencyContact.contactNum !== "") {
+      emergencyContactObj.contactNum = emergencyContact.contactNum;
+      updateObj.companyInformation.emergencyContact = emergencyContactObj;
+    }
+    if (emergencyContact.relationship && emergencyContact.relationship !== "") {
+      emergencyContactObj.relationship = emergencyContact.relationship;
+      updateObj.companyInformation.emergencyContact = emergencyContactObj;
+    }
+    userMiddleware
+      .updateRecord({ filterQuery, updateObj })
+      .then((data) => {
+        res.json({ status: true, message: "successfully Updated the Details" });
+      })
+      .catch((err) => {
         console.log("err===", err);
         res.json({ status: false, message: err.message });
-    }
-}
+      });
+  } catch (err) {
+    console.log("err===", err);
+    res.json({ status: false, message: err.message });
+  }
+};
 
 const updateUserPic = async(req, res, next) =>{
     try{
