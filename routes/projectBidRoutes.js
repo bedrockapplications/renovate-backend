@@ -4,7 +4,7 @@ const projectBidController = require('../controllers/projectContractorBidControl
 const auth = require('../middlewares/tokenValidate');
 const {s3MultipleFileUpload} = require('../utils/s3fileUpload');
 
-router.post("/add", auth.tokenValidation, auth.contractorValidation, s3MultipleFileUpload.array('co', 3),projectBidController.applyProjectBid)
+router.post("/add", auth.tokenValidation, auth.contractorValidation, s3MultipleFileUpload.array('documentLink', 3),projectBidController.applyProjectBid)
 router.get("/get", projectBidController.getAllProjectBid)
 router.get("/get/:id", projectBidController.getProjectBid)
 router.put("/update/:id", projectBidController.updateProjectBid)
