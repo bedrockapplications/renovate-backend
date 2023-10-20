@@ -7,7 +7,7 @@ const projectContractorBidSchema = mongoose.Schema({
     comment:{type: String},
     amount:{type: mongoose.Schema.Types.Decimal128},
     currency:{type: String},
-    documentLink:{type: String},
+    documentLink:[{type: String}],
     // status: { type: String, enum: ["active", "inactive"], default: "active" }, approved:-- final selection
     status: { type: String, enum: ["pending", "selected", "rejected","approved"], default: "pending" },
   },
