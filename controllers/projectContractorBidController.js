@@ -93,6 +93,33 @@ const getAllAppliedContractor = async (req, res, next)=>{
       }
 }
 
+const getAppliedContractor = async (req, res, next)=>{
+    try{
+        let {status,projectId}=req.query;
+        let filterQuery = {};
+        let projectQuery = {};
+        let userId = req.user._id;
+        filterQuery = {
+          contractorId: userId,
+          projectId:projectId
+        };
+        if(status) filterQuery.status = status;
+    
+        projectBidMiddleware
+          .getSingleRecord({ filterQuery, projectQuery })
+          .then((data) => {
+            res.json(data);
+          })
+          .catch((err) => {
+            console.log("err===", err);
+            res.json({ status: false, message: err.message });
+          });
+    }catch (err) {
+        console.log("err===", err);
+        res.json({ status: false, message: err.message });
+      }
+}
+
 const getAllApplicantContractor = async (req, res, next)=>{
     try{
         let {status, projectId}=req.query;
@@ -164,4 +191,5 @@ module.exports ={
     getAllAppliedContractor,
     getAllApplicantContractor,
     updateProjectBidStatus,
+    getAppliedContractor,
 }

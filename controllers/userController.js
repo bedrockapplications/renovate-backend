@@ -110,7 +110,8 @@ const userLogin = async(req, res, next) =>{
 
 const userResetPassword = async(req, res, next) =>{
     try{
-        let {email, oldPassword, newPassword} = req.body;
+      let {oldPassword, newPassword} = req.body;
+      let email = req.user.email;
         let filterQuery = {email};
         let projectQuery = {};
         let userExist = await userMiddleware.getSingleRecord({filterQuery,projectQuery});

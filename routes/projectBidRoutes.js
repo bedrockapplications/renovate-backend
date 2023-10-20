@@ -11,6 +11,7 @@ router.put("/update/:id", projectBidController.updateProjectBid)
 router.put("/update/status/:id",auth.tokenValidation, auth.ownerValidation, projectBidController.updateProjectBidStatus)
 
 // Contractor API 
+router.get("/applied/project",auth.tokenValidation, auth.contractorValidation, projectBidController.getAppliedContractor)
 router.get("/applied",auth.tokenValidation, auth.contractorValidation, projectBidController.getAllAppliedContractor)
 
 // ProjectManager API 

@@ -55,6 +55,24 @@ const getSingleRecord =(query) =>{
     });
 }
 
+const getSingleRecordPopulate=(query) =>{
+    return new Promise(async (resolve, reject)=>{
+        try{
+            let {filterQuery, projectQuery} = query;
+            let record = await projectBid.findOne(filterQuery, projectQuery).populate([{path:'projectId', model:'br_project',select:'',populate:{path:'userId', model:'br_user_profile',select:['fullName','email', 'phoneNumber','organizationName','profilePic']}}]);
+            resolve({
+                status:true,
+                data:record
+            })
+        }catch(err){
+            reject({
+                status:false,
+                message:err.message
+            })
+        }
+    });
+}
+
 const updateRecord =(query) =>{
     return new Promise(async (resolve, reject)=>{
         try{

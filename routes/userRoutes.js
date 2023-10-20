@@ -19,7 +19,7 @@ router.post("/register",userController.userRegister);
 router.post("/register/contractor",userController.userContractorRegister);
 router.post("/add/contractor",auth.tokenValidation,userController.userRegisterContractor);
 router.post("/login",userController.userLogin);
-router.put("/resetpassword",userController.userResetPassword);
+router.put("/resetpassword",auth.tokenValidation, userController.userResetPassword);
 router.post("/forgot/password",userController.userForgotPassword);
 router.get("/details",userController.getUserDetails);
 router.get("/getdetails",auth.tokenValidation,userController.getUserDetail);
