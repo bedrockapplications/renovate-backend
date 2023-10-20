@@ -106,9 +106,21 @@ const getAppliedContractor = async (req, res, next)=>{
         if(status) filterQuery.status = status;
     
         projectBidMiddleware
-          .getSingleRecord({ filterQuery, projectQuery })
+          .getSingleRecordPopulate({ filterQuery, projectQuery })
           .then((data) => {
-            res.json(data);
+            if(data.data){
+                res.json({
+                    status:data.status,
+                    data:data.data,
+                    message:"applied"
+                });
+            }else{
+                res.json({
+                    status:data.status,
+                    data:{},
+                    message:"not-applied"
+                });
+            }
           })
           .catch((err) => {
             console.log("err===", err);
