@@ -5,15 +5,15 @@ const projectContractorMiddleware = require("../middlewares/projectContractorMid
 
 const applyProjectBid = async (req, res, next) =>{
     try{
-    let {projectId,servicesProvided,comment,amount,currency,documentLink} =req.body;
+    let {projectId,servicesProvided,comment,amount,currency,startDate,endDate,documentLink} =req.body;
     // let {projectName,projectType,clientPhNumber,address,city,state,country,zipcode,startDate} =req.body;
     let userId = req.user._id;
-    if(!projectId||!servicesProvided||!comment||!amount||!currency) throw({message:"Required fields are missing"});
+    if(!projectId||!servicesProvided||!comment||!amount||!currency||!startDate||!endDate) throw({message:"Required fields are missing"});
     let projectDetail = await projectMiddleware.getSingleRecord({filterQuery:{_id:projectId }, projectQuery:{}});
     if(!projectDetail.status || !projectDetail.data) throw({message: "Couldn't find the project for the given id" });
     let fileDate = req.files;
     let filesLoc = fileDate.map(value => value.location);
-    projectBidMiddleware.createRecord({projectId,contractorId:userId,servicesProvided,comment,amount,currency,documentLink:[...filesLoc]}).then(data =>{
+    projectBidMiddleware.createRecord({projectId,contractorId:userId,servicesProvided,comment,amount,currency,startDate,endDate,documentLink:[...filesLoc]}).then(data =>{
         res.json(data);
         // res.json({status:true, data});
     }).catch(err=>{
