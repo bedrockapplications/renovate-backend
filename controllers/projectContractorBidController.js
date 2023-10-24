@@ -178,7 +178,7 @@ const updateProjectBidStatus = async(req, res, next) =>{
 
         if(status == 'selected'){
             // added the record to project contractor
-            let projectContractor = await projectContractorMiddleware({projectId:dbiingDetail.data.projectId,contractorId:bidingDetail.data.contractorId });
+            let projectContractor = await projectContractorMiddleware({projectId:bidingDetail.data.projectId,contractorId:bidingDetail.data.contractorId });
             console.log("added the contractor to a project")
         }
         projectBidMiddleware.updateRecord({filterQuery, updateObj}).then(data =>{
