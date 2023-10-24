@@ -41,14 +41,14 @@ const getAllRecords =(query) =>{
         try{
             let {filterQuery, projectQuery} = query;
             let {userId,projectId,categoryType } = filterQuery;
-            let fiterObj ={};
+            let filterObj ={};
             if(userId)
             filterObj.userId=userId;
             if(projectId)
             filterObj.projectId=projectId;
             if(categoryType)
             filterObj.categoryType=categoryType;
-            let allRecords = await document.find(fiterObj, projectQuery);
+            let allRecords = await document.find(filterObj, projectQuery);
             resolve({
                 status:true,
                 data:allRecords
